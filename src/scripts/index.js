@@ -1,13 +1,9 @@
-// Definimos essa função como assíncrona pois precisamos aguardar a resposta da função consomePokeAPI
-async function renderizaPokemons() {
+async function renderAllPokemons() {
   const ulTag = document.querySelector('ul')
+  const listaDePokemons = await consumePokeAPI()
 
-  // Aqui utilizaremos o await para aguardar a resposta da função
-  const listaDePokemons = await consomePokeAPI()
-
-  // Agora é só iterar sob o array e renderizar cada pokemon
-  listaDePokemons.results.forEach(pokemon => {
-      // "Fatia" o número do pokemon na pokedex a partir da URL de cada pokemon
+  setTimeout(() => {
+   listaDePokemons.results.forEach(pokemon => {
       const numeroNaPokedex = pokemon.url.slice(34, -1)
 
       ulTag.insertAdjacentHTML('beforeend', `
@@ -17,39 +13,20 @@ async function renderizaPokemons() {
           </li>
       `)
   })
+  ;
+}, 1101);
 }
+renderAllPokemons()
 
-// Chama a função para rodá-la ao carregar a página
-renderizaPokemons()
-
-console.log(renderizaPokemons())
-
-function renderPokemon(array){
-  const ul = document.querySelector('ul')
-
-  ul.innerHTML = ''
-
-  array.forEach(element => {
-    const card = createCard(element)
-
-    ul.append(card)
-  })
-}
-
-function createCard({img, name}) {
-  const container = document.createElement('li')
-  const image = document.createElement('img')
+function createLoadingCard() {
+  const div = document.createElement('div')
   const p = document.createElement('p')
 
-  image.src = img
-  image.alt = name
+  div.classList.add('loading')
+  p.innerText = 'Carregando...'
 
-  h2.innerText = name
 
-  p.innerText = level
+  div.append(p)
 
-  container.append(image, p)
-
-  return container
+  return div
 }
-
